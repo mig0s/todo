@@ -317,6 +317,44 @@ async function fetchColumns() {
     });
 }
 
+function searchCards(searchText) {
+
+    // GET AN ARRAY OF ALL COLUMNS
+    let colArr = document.querySelectorAll('todo-column');
+    colArr.forEach(colElement => {
+
+        // GET AN ARRAY OF ALL CARDS AND WORK WITH SHADOW ROOT ELEMENTS
+        let cardArr = colElement.root.querySelectorAll('todo-card');
+        cardArr.forEach(cardElement => {
+            let titleElem = cardElement.shadowRoot.querySelector('.title');
+            let titleText = titleElem.textContent;
+
+            // REMOVE SPEACIAL CHARACTERS
+            titleText = titleText.replace(/(\r\n\t|\n|\r\t)/gm,"");
+
+            // TOGGLE CASE INSENSIVITY
+            titleText = titleText.toUpperCase().trim();
+            searchText = searchText.toUpperCase().trim();
+
+            // CHECK FOR A MATCH IN THE TITLE
+            if (titleText.indexOf(searchText) === -1) {
+                cardElement.style.display = 'none';
+            } else {
+                cardElement.style.display = 'initial';
+                cardElement.style.visibility = 'visible';
+            }
+        });
+
+        // CHECK IF COLUMN STILL CONTAINS VISIBLE CARDS, HIDE COLUMN IF IT DOESN'T
+        if (colElement.root.querySelectorAll('todo-card:not([style*="display:none"]):not([style*="display: none"])').length > 0 ) {
+            colElement.style.display = 'initial';
+            colElement.style.visibility = 'visible';
+        } else {
+            colElement.style.display = 'none';
+        }
+    });
+}
+
 /*
  *
  * INTIAL SEQUENCES
@@ -346,4 +384,10 @@ window.addEventListener('load', () => {
         };
         fetch( serverUrl + `columns/`, options );
     })
+});
+
+// SEARCH EVENT LISTENER
+document.getElementById('searchbar').addEventListener('keyup', function(ev) {
+    let searchText = this.value;
+    searchCards(searchText);			
 });
