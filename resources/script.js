@@ -140,3 +140,68 @@ class ToDoCard extends ToDoElement {
 
 customElements.define('todo-column', ToDoColumn);
 customElements.define('todo-card', ToDoCard);
+
+/*
+ *
+ * FUNCTIONS
+ *
+ */
+
+async function fetchColumns() {
+    const res = await fetch(serverUrl + 'columns');
+    const json = await res.json();
+
+    // GETTING COLUMNS
+    json.forEach(Column => {
+
+        // RENDER COLUMNS
+        const columnElement = document.createElement('todo-column');
+        columnElement.Column = Column;
+        main.appendChild(columnElement);
+
+        // GETTING CARDS FOR EACH COLUMN
+        fetch(serverUrl + 'cards?columnId=' + Column.id).then(response => {
+            return response.json();
+        }).then(data => {
+            data.forEach(Card => {
+
+                // RENDER CARDS
+                var cardContainer = columnElement.root.getElementById(Column.id);
+                var childCard = document.createElement('todo-card');
+                childCard.Card = Card;
+                cardContainer.appendChild(childCard);
+            });
+        });
+    });
+}
+
+/*
+ *
+ * INTIAL SEQUENCES
+ *
+ */
+
+// FETCHING AND RENDERING ALL ELEMENTS FROM DB
+const main = document.getElementById('container');
+window.addEventListener('load', () => {
+    // CALLING ASYNCHRONOUS FUNCTION fetchColumns TO FETCH AND RENDER ALL ELEMENTS
+    fetchColumns();
+    // ADD COLUMN EVENT LISTENER
+    document.getElementById("addColBtn").addEventListener("click", e => {
+        let columnElement = document.createElement("todo-column");
+        let Column = {
+            id: Math.floor((Math.random() * 10000) + 1),
+            title: 'new column'
+        };
+        columnElement.Column = Column;
+        main.appendChild(columnElement);
+        let options = {
+            method: 'POST', 
+            body: JSON.stringify(Column),
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        };
+        fetch( serverUrl + `columns/`, options );
+    })
+});
