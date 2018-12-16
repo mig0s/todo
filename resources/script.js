@@ -210,6 +210,13 @@ function updateColumn (Column) {
     jsonRequest( `${serverUrl}columns/${columnId}`, options );
 }
 
+function jsonRequest( url, options = {}) {
+    // SEND HTTP REQUEST TO SERVER
+    fetch( url, options ).then( function( response ) {
+        if ( response.ok ) { return response.json(); }
+        throw new Error('Response failed');
+    });
+}
 
 async function fetchColumns() {
     const res = await fetch(serverUrl + 'columns');
