@@ -82,6 +82,44 @@ class ToDoColumn extends ToDoElement {
     }
     connectedCallback() {
         console.log('ToDoColumn connected');
+        let self = this;
+
+        // DELETE COLUMN EVENT LISTENER -> DELETES COLUMN ON CLICK
+        let delColBtnElem = this.root.querySelector('.delCol');
+        delColBtnElem.addEventListener('click', function(ev) {
+            let columnId = self.root.querySelector('.column').id;
+            deleteColumn(columnId);
+            self.remove();
+        });
+
+        // TITLE EDITING EVENT LISTENER -> UPDATES COLUMN ON INPUT
+        let titleElem = this.root.querySelector('.columnHeader');
+        titleElem.addEventListener('input', function(ev) {
+            let columnId = self.root.querySelector('.column').id;
+            let title = self.root.querySelector('.columnHeader').textContent;
+            var Column = {
+                id: columnId,
+                title: title
+            };
+            updateColumn(Column);
+        });
+
+        // CARD ADDING EVENT LISTENER -> ADDS A CARD WITH RANDOM ID & DEFAULT TITLE AND DESCRIPTION
+        let addCardBtnElem = this.root.querySelector('.addCard');
+		addCardBtnElem.addEventListener('click', function(ev) {
+            
+            var cardContainer = self.root.querySelector('.column');
+            var childCard = document.createElement('todo-card');
+            var Card = {
+                id: Math.floor((Math.random() * 10000) + 1),
+                title: 'new card',
+                description: 'description',
+                columnId: self.root.querySelector('.column').id
+            };
+            childCard.Card = Card;
+            cardContainer.appendChild(childCard);
+            addCard(Card);
+        });
     }
 }
 
