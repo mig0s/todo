@@ -260,14 +260,6 @@ function deleteColumn (columnId) {
     let options = { method: 'DELETE' };
     jsonRequest( `${serverUrl}columns/${columnId}`, options );
 
-    // FETCH ALL CARDS OF DELETED COLUMN AND DELETE
-    fetch(serverUrl + 'cards?columnId=' + columnId).then(response => {
-        return response.json();
-    }).then(data => {
-        data.forEach(Card => {
-            deleteCard(Card.id);
-        });
-    });
 }
 
 function updateColumn (Column) {
