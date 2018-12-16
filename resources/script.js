@@ -182,6 +182,35 @@ function updateCard(Card) {
     jsonRequest( `${serverUrl}cards/${cardId}`, options );
 }
 
+
+function deleteColumn (columnId) {
+
+    // DELETE COLUMN USING 'DELETE' REQUEST
+    let options = { method: 'DELETE' };
+    jsonRequest( `${serverUrl}columns/${columnId}`, options );
+
+    // FETCH ALL CARDS OF DELETED COLUMN AND DELETE
+    fetch(serverUrl + 'cards?columnId=' + columnId).then(response => {
+        return response.json();
+    }).then(data => {
+        data.forEach(Card => {
+            deleteCard(Card.id);
+        });
+    });
+}
+
+function updateColumn (Column) {
+    let columnId = Column.id;
+    // UPDATE COLUMN USING 'PATCH' REQUEST
+    let options = {
+        method: 'PATCH',
+        body: JSON.stringify(Column),
+        headers:{ 'Content-Type': 'application/json' }
+    };
+    jsonRequest( `${serverUrl}columns/${columnId}`, options );
+}
+
+
 async function fetchColumns() {
     const res = await fetch(serverUrl + 'columns');
     const json = await res.json();
