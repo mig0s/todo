@@ -147,6 +147,41 @@ customElements.define('todo-card', ToDoCard);
  *
  */
 
+
+const serverUrl = `http://localhost:3000/`;
+
+function addCard (Card) {
+
+    // ADD CARD USING 'POST' REQUEST
+    let options = {
+        method: 'POST', 
+        body: JSON.stringify(Card),
+        headers:{ 'Content-Type': 'application/json' }
+    };	
+    jsonRequest( `${serverUrl}cards/`, options );
+}
+
+function deleteCard(cardId) {
+
+    // DELETE CARD USING 'DELETE' REQUEST
+    let options = { method: 'DELETE' };	
+    jsonRequest( `${serverUrl}cards/${cardId}`, options );
+}
+
+function updateCard(Card) {
+    let cardId = Card.id;
+
+    // UPDATE CARD USING 'PATCH' REQUEST   
+    let options = {
+        method: 'PATCH',
+        body: JSON.stringify(Card),
+        headers:{
+            'Content-Type': 'application/json'
+        }
+    };	
+    jsonRequest( `${serverUrl}cards/${cardId}`, options );
+}
+
 async function fetchColumns() {
     const res = await fetch(serverUrl + 'columns');
     const json = await res.json();
