@@ -1,0 +1,50 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 20px;
+}
+
+/* PAGE ELEMENTS STYLES */
+.container {
+    margin: 0px 15px 0px 15px;
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-rows: repeat(2, minmax(100px));
+}
+.bar {
+    margin: 25px 35px 25px 15px;
+}
+.searchbar {
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    border: black solid 1px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* BUTTONS STYLES */
+.btn {			
+    border: 1px solid lightgray;
+    background-color: darkgreen;
+    color: white;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 5px;
+    cursor: pointer;
+    transition: 0.25s;
+    font-size: 12px;
+    text-shadow: #000 0 1px;
+    font-weight: 800;
+}
+.btn:hover {
+    background-color: black;
+}
+.btn:active {
+    background-color: grey;
+    text-shadow: dimgray 0 2px;
+}
+.delCol {
+    float: right;
+    background-color: darkred;
+}
