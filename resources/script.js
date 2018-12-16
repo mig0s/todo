@@ -173,6 +173,39 @@ class ToDoCard extends ToDoElement {
     }
     connectedCallback() {
         console.log('ToDoCard connected');
+        let self = this;
+
+        // DELETE CARD EVENT LISTENER -> DELETES CARD ON CLICK
+        let delCardBtnElem = this.root.querySelector('.deleteBtn');
+		delCardBtnElem.addEventListener('click', function(ev) {
+            var cardId = self.root.querySelector('.card').id;
+            self.remove();
+            deleteCard(cardId);
+        });
+
+        // CARD TITlE EDITING EVENT LISTENER
+        let titleElem = this.root.querySelector('.title');
+        titleElem.addEventListener('input', function(ev) {
+            let cardId = self.root.querySelector('.card').id;
+            let title = self.root.querySelector('.title').textContent;
+            var Card = {
+                id: cardId,
+                title: title
+            };
+            updateCard(Card);
+        });
+
+        // CARD DESCRIPTION EDITING EVENT LISTENER
+        let descriptionElem = this.root.querySelector('.description');
+        descriptionElem.addEventListener('input', function(ev) {
+            let cardId = self.root.querySelector('.card').id;
+            let description = self.root.querySelector('.description').textContent;
+            var Card = {
+                id: cardId,
+                description: description
+            };
+            updateCard(Card);
+        });
     }
 }
 
